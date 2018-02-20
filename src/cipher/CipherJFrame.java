@@ -6,37 +6,45 @@
 package cipher;
 
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Maneesha
  */
 public class CipherJFrame extends javax.swing.JFrame {
-
+    private String alphabet="abcdefghijklmnopqrstuvwxyz";
+    private ArrayList<Character> originalAlphabet=new ArrayList<>();
+    private ArrayList<Character> newAlphabet=new ArrayList<>();
+    private String filePath;
+    private ArrayList<String> fileLines=new ArrayList<>();
+            
     public CipherJFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        
-        String alphabet="abcdefghijklmnopqrstuvwxyz";
-        ArrayList<Character> originalAlphabet=new ArrayList<>();
-        
-        
         for(int i=0;i<alphabet.length();i++){ //adding alphabet to the original alphabet array
             originalAlphabet.add(alphabet.charAt(i));
+            newAlphabet.add(alphabet.charAt(i));
         }
     }
     
-    String filePath;
-    
+    private void shuffleArray(){//shuffle array elements
+        Collections.shuffle(newAlphabet);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -134,13 +142,35 @@ public class CipherJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_encryptBtnMouseClicked
 
     private void encryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptTxtMouseClicked
-            JFileChooser fc=new JFileChooser();
-            int result=fc.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                   File file = fc.getSelectedFile();
-                   filePath = file.getAbsolutePath(); 
-                   encryptFilePath.setText(filePath);
-     }        // TODO add your handling code here:
+        JFileChooser fc=new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        fc.setFileFilter(filter);
+        int result=fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();        
+            filePath = file.getAbsolutePath(); 
+            encryptFilePath.setText(filePath);
+            String line = null;
+
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader =new FileReader(filePath);
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader =new BufferedReader(fileReader);
+            while((line = bufferedReader.readLine()) != null) {
+                fileLines.add(line);
+            }   
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println("Unable to open file");               
+        }
+        catch(IOException ex) {
+            System.out.println("Error reading file" );                  
+
+        }
+                   
+            }        
     }//GEN-LAST:event_encryptTxtMouseClicked
 
     
