@@ -71,6 +71,12 @@ public class CipherJFrame extends javax.swing.JFrame {
         encryptFilePath = new javax.swing.JLabel();
         decryptLogo = new javax.swing.JLabel();
         exitBtn = new javax.swing.JLabel();
+        decryptfile = new javax.swing.JLabel();
+        decryptFilePath = new javax.swing.JLabel();
+        decryptTxt = new javax.swing.JLabel();
+        decryptKeyTB = new javax.swing.JTextField();
+        decryptKeyTitle = new javax.swing.JLabel();
+        fileDecryptWarn = new javax.swing.JLabel();
         divider = new javax.swing.JLabel();
         backgroundOverlay = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
@@ -90,7 +96,7 @@ public class CipherJFrame extends javax.swing.JFrame {
         encryptLogo.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
         encryptLogo.setForeground(new java.awt.Color(255, 255, 255));
         encryptLogo.setText("Encrypt");
-        getContentPane().add(encryptLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        getContentPane().add(encryptLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         encryptTxt.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
         encryptTxt.setForeground(new java.awt.Color(255, 153, 0));
@@ -101,10 +107,10 @@ public class CipherJFrame extends javax.swing.JFrame {
                 encryptTxtMouseClicked(evt);
             }
         });
-        getContentPane().add(encryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 80, 30));
+        getContentPane().add(encryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 80, 30));
 
         encryptKeyTB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        getContentPane().add(encryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 400, 30));
+        getContentPane().add(encryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 400, 30));
 
         encryptBtn.setBackground(new java.awt.Color(255, 255, 255));
         encryptBtn.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
@@ -116,26 +122,26 @@ public class CipherJFrame extends javax.swing.JFrame {
                 encryptBtnMouseClicked(evt);
             }
         });
-        getContentPane().add(encryptBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 100, 30));
+        getContentPane().add(encryptBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 100, 30));
 
         encryptKeyTitle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         encryptKeyTitle.setForeground(new java.awt.Color(255, 255, 255));
         encryptKeyTitle.setText(" Encrypt Key");
-        getContentPane().add(encryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 292, 100, -1));
+        getContentPane().add(encryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 290, 100, -1));
 
         fileEncryptWarn.setForeground(new java.awt.Color(255, 153, 51));
         fileEncryptWarn.setText("File Encrypted, Use Encrypt key to Decrypt");
-        getContentPane().add(fileEncryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 250, -1));
+        getContentPane().add(fileEncryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 250, -1));
 
         encryptFilePath.setBackground(new java.awt.Color(255, 255, 255));
         encryptFilePath.setForeground(new java.awt.Color(255, 255, 255));
         encryptFilePath.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        getContentPane().add(encryptFilePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 310, 30));
+        getContentPane().add(encryptFilePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 310, 30));
 
         decryptLogo.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
         decryptLogo.setForeground(new java.awt.Color(255, 255, 255));
         decryptLogo.setText("Decrypt");
-        getContentPane().add(decryptLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, -1, -1));
+        getContentPane().add(decryptLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 90, -1, -1));
 
         exitBtn.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         exitBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -147,10 +153,50 @@ public class CipherJFrame extends javax.swing.JFrame {
         });
         getContentPane().add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, -1, -1));
 
+        decryptfile.setBackground(new java.awt.Color(255, 255, 255));
+        decryptfile.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
+        decryptfile.setForeground(new java.awt.Color(255, 153, 51));
+        decryptfile.setText(" Decrypt File");
+        decryptfile.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+        decryptfile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                decryptfileMouseClicked(evt);
+            }
+        });
+        getContentPane().add(decryptfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 100, 30));
+
+        decryptFilePath.setBackground(new java.awt.Color(255, 255, 255));
+        decryptFilePath.setForeground(new java.awt.Color(255, 255, 255));
+        decryptFilePath.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        getContentPane().add(decryptFilePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 310, 30));
+
+        decryptTxt.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
+        decryptTxt.setForeground(new java.awt.Color(255, 153, 0));
+        decryptTxt.setText(" Select File");
+        decryptTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+        decryptTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                decryptTxtMouseClicked(evt);
+            }
+        });
+        getContentPane().add(decryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 140, 80, 30));
+
+        decryptKeyTB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        getContentPane().add(decryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 400, 30));
+
+        decryptKeyTitle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        decryptKeyTitle.setForeground(new java.awt.Color(255, 255, 255));
+        decryptKeyTitle.setText(" Enter Encrypt Key to Decrypt");
+        getContentPane().add(decryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 290, 220, -1));
+
+        fileDecryptWarn.setForeground(new java.awt.Color(255, 153, 51));
+        fileDecryptWarn.setText("File Decypted Successfully");
+        getContentPane().add(fileDecryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(439, 312, 150, -1));
+
         divider.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maneesha\\Desktop\\devider.png")); // NOI18N
         divider.setMaximumSize(new java.awt.Dimension(100, 2048));
         divider.setOpaque(true);
-        getContentPane().add(divider, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 3, 390));
+        getContentPane().add(divider, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 60, 3, 390));
 
         backgroundOverlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cipher/images/overlay.png"))); // NOI18N
         getContentPane().add(backgroundOverlay, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 6, 860, 450));
@@ -164,7 +210,8 @@ public class CipherJFrame extends javax.swing.JFrame {
     private void exitBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitBtnMouseClicked
         this.dispose();
     }//GEN-LAST:event_exitBtnMouseClicked
-
+    
+    //===============================Encryptation===============================
     private void encryptBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptBtnMouseClicked
         shuffleArray();
         //change alphabet and put it into a new textline
@@ -261,6 +308,15 @@ public class CipherJFrame extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_encryptTxtMouseClicked
 
+    private void decryptfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decryptfileMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_decryptfileMouseClicked
+
+    private void decryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decryptTxtMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_decryptTxtMouseClicked
+
+    //===============================Decryptation===============================
     
     
     public static void main(String args[]) {
@@ -274,7 +330,12 @@ public class CipherJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
     private javax.swing.JLabel backgroundOverlay;
+    private javax.swing.JLabel decryptFilePath;
+    private javax.swing.JTextField decryptKeyTB;
+    private javax.swing.JLabel decryptKeyTitle;
     private javax.swing.JLabel decryptLogo;
+    private javax.swing.JLabel decryptTxt;
+    private javax.swing.JLabel decryptfile;
     private javax.swing.JLabel divider;
     private javax.swing.JLabel encryptBtn;
     private javax.swing.JLabel encryptFilePath;
@@ -283,6 +344,7 @@ public class CipherJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel encryptLogo;
     private javax.swing.JLabel encryptTxt;
     private javax.swing.JLabel exitBtn;
+    private javax.swing.JLabel fileDecryptWarn;
     private javax.swing.JLabel fileEncryptWarn;
     private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
