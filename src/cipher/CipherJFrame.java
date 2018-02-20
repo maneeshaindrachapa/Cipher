@@ -7,10 +7,14 @@ package cipher;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,11 +35,14 @@ public class CipherJFrame extends javax.swing.JFrame {
     private ArrayList<Character> originalAlphabet=new ArrayList<>();
     private ArrayList<Character> newAlphabet=new ArrayList<>();
     private String filePath;
-    private ArrayList<String> fileLines=new ArrayList<>();
+    private String fileText="";
+    private String newFileText="";
+    private String encrypKey="";
             
     public CipherJFrame() {
         initComponents();
         setLocationRelativeTo(null);
+        fileEncryptWarn.setVisible(false);
         for(int i=0;i<alphabet.length();i++){ //adding alphabet to the original alphabet array
             originalAlphabet.add(alphabet.charAt(i));
             newAlphabet.add(alphabet.charAt(i));
@@ -44,6 +51,9 @@ public class CipherJFrame extends javax.swing.JFrame {
     
     private void shuffleArray(){//shuffle array elements
         Collections.shuffle(newAlphabet);
+        for(int i=0;i<newAlphabet.size();i++){
+            encrypKey+=newAlphabet.get(i);
+        }
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -52,11 +62,14 @@ public class CipherJFrame extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         encryptLogo = new javax.swing.JLabel();
         encryptTxt = new javax.swing.JLabel();
+        encryptKeyTB = new javax.swing.JTextField();
         encryptBtn = new javax.swing.JLabel();
+        encryptKeyTitle = new javax.swing.JLabel();
+        fileEncryptWarn = new javax.swing.JLabel();
         encryptFilePath = new javax.swing.JLabel();
         decryptLogo = new javax.swing.JLabel();
         exitBtn = new javax.swing.JLabel();
-        devider = new javax.swing.JLabel();
+        divider = new javax.swing.JLabel();
         backgroundOverlay = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
@@ -88,6 +101,9 @@ public class CipherJFrame extends javax.swing.JFrame {
         });
         getContentPane().add(encryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 80, 30));
 
+        encryptKeyTB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        getContentPane().add(encryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 400, 30));
+
         encryptBtn.setBackground(new java.awt.Color(255, 255, 255));
         encryptBtn.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
         encryptBtn.setForeground(new java.awt.Color(255, 153, 51));
@@ -99,6 +115,15 @@ public class CipherJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(encryptBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 100, 30));
+
+        encryptKeyTitle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        encryptKeyTitle.setForeground(new java.awt.Color(255, 255, 255));
+        encryptKeyTitle.setText(" Encrypt Key");
+        getContentPane().add(encryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 292, 100, -1));
+
+        fileEncryptWarn.setForeground(new java.awt.Color(255, 153, 51));
+        fileEncryptWarn.setText("File Encrypted, Use Encrypt key to Decrypt");
+        getContentPane().add(fileEncryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 250, -1));
 
         encryptFilePath.setBackground(new java.awt.Color(255, 255, 255));
         encryptFilePath.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,9 +145,10 @@ public class CipherJFrame extends javax.swing.JFrame {
         });
         getContentPane().add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, -1, -1));
 
-        devider.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maneesha\\Desktop\\devider.png")); // NOI18N
-        devider.setMaximumSize(new java.awt.Dimension(100, 2048));
-        getContentPane().add(devider, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 4, 390));
+        divider.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maneesha\\Desktop\\devider.png")); // NOI18N
+        divider.setMaximumSize(new java.awt.Dimension(100, 2048));
+        divider.setOpaque(true);
+        getContentPane().add(divider, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 3, 390));
 
         backgroundOverlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cipher/images/overlay.png"))); // NOI18N
         getContentPane().add(backgroundOverlay, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 6, 860, 450));
@@ -138,10 +164,36 @@ public class CipherJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitBtnMouseClicked
 
     private void encryptBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptBtnMouseClicked
-        //
+        shuffleArray();
+        encryptKeyTB.setText(encrypKey);
+        //change alphabet and put it into a new textline
+        for (int i = 0; i < fileText.length(); i++) {
+            for (int j = 0; j < alphabet.length(); j++) {
+                if (fileText.charAt(i) == alphabet.charAt(j)) {
+                    newFileText += newAlphabet.get(j);
+                    System.out.println(newAlphabet);
+                    break;
+                }else if(j==25){
+                    newFileText+=fileText.charAt(i);
+                }
+            }
+        }
+        //create a new file to write the output
+        try {
+            FileWriter fileWriter =new FileWriter("Decrypt.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(newFileText);
+            System.out.println(newFileText);
+            bufferedWriter.close();
+            fileEncryptWarn.setVisible(true);
+        }
+        catch(IOException ex) {
+            System.out.println("Error writing to file");
+        }
     }//GEN-LAST:event_encryptBtnMouseClicked
 
     private void encryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptTxtMouseClicked
+        fileEncryptWarn.setVisible(false);
         JFileChooser fc=new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         fc.setFileFilter(filter);
@@ -151,26 +203,24 @@ public class CipherJFrame extends javax.swing.JFrame {
             filePath = file.getAbsolutePath(); 
             encryptFilePath.setText(filePath);
             String line = null;
+            try {
+                // FileReader reads text files in the default encoding.
+                FileReader fileReader =new FileReader(filePath);
+                // Always wrap FileReader in BufferedReader.
+                BufferedReader bufferedReader =new BufferedReader(fileReader);
+                while((line = bufferedReader.readLine()) != null) {
+                    fileText+=line; //adding all lines to a sin
+                }   
+                bufferedReader.close();         
+            }
+            catch(FileNotFoundException ex) {
+                System.out.println("Unable to open file");               
+            }
+            catch(IOException ex) {
+                System.out.println("Error reading file" );                  
 
-        try {
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader =new FileReader(filePath);
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader =new BufferedReader(fileReader);
-            while((line = bufferedReader.readLine()) != null) {
-                fileLines.add(line);
-            }   
-            bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file");               
-        }
-        catch(IOException ex) {
-            System.out.println("Error reading file" );                  
-
-        }
-                   
-            }        
+            }
+        }        
     }//GEN-LAST:event_encryptTxtMouseClicked
 
     
@@ -187,12 +237,15 @@ public class CipherJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel background;
     private javax.swing.JLabel backgroundOverlay;
     private javax.swing.JLabel decryptLogo;
-    private javax.swing.JLabel devider;
+    private javax.swing.JLabel divider;
     private javax.swing.JLabel encryptBtn;
     private javax.swing.JLabel encryptFilePath;
+    private javax.swing.JTextField encryptKeyTB;
+    private javax.swing.JLabel encryptKeyTitle;
     private javax.swing.JLabel encryptLogo;
     private javax.swing.JLabel encryptTxt;
     private javax.swing.JLabel exitBtn;
+    private javax.swing.JLabel fileEncryptWarn;
     private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }
