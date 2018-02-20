@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -178,6 +179,31 @@ public class CipherJFrame extends javax.swing.JFrame {
                 }
             }
         }
+        //random string dividing
+        Random rn = new Random();
+        int randomNumber = rn.nextInt(5) + 6;
+        
+        int newTextlength=newFileText.length();
+        int newTextLessCharacterNo=newTextlength%randomNumber;
+        
+        for(int i=0;i<newTextLessCharacterNo;i++){//setting a fixed length
+            newFileText+=" ";
+        }
+        
+        ArrayList<String> tempStrings=new ArrayList<>();
+        String temp="";
+        int count=0;
+        for(int j=0;j<newFileText.length();j++){
+            count++;
+            temp += newFileText.charAt(j);
+            if (count == randomNumber) {
+                tempStrings.add(temp);
+                temp = "";
+                count=0;
+            }
+            
+        }
+        System.out.println(tempStrings);
         //create a new file to write the output
         try {
             FileWriter fileWriter =new FileWriter("Decrypt.txt");
