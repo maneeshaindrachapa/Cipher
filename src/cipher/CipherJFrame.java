@@ -5,6 +5,17 @@
  */
 package cipher;
 
+import java.awt.BorderLayout;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Maneesha
@@ -14,7 +25,17 @@ public class CipherJFrame extends javax.swing.JFrame {
     public CipherJFrame() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        String alphabet="abcdefghijklmnopqrstuvwxyz";
+        ArrayList<Character> originalAlphabet=new ArrayList<>();
+        
+        
+        for(int i=0;i<alphabet.length();i++){ //adding alphabet to the original alphabet array
+            originalAlphabet.add(alphabet.charAt(i));
+        }
     }
+    
+    String filePath;
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -23,8 +44,8 @@ public class CipherJFrame extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         encryptLogo = new javax.swing.JLabel();
         encryptTxt = new javax.swing.JLabel();
-        encryptTB = new javax.swing.JTextField();
         encryptBtn = new javax.swing.JLabel();
+        encryptFilePath = new javax.swing.JLabel();
         decryptLogo = new javax.swing.JLabel();
         exitBtn = new javax.swing.JLabel();
         devider = new javax.swing.JLabel();
@@ -49,23 +70,32 @@ public class CipherJFrame extends javax.swing.JFrame {
         getContentPane().add(encryptLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         encryptTxt.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
-        encryptTxt.setForeground(new java.awt.Color(255, 255, 255));
-        encryptTxt.setText("Type The Text To Encrypt");
-        getContentPane().add(encryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
-
-        encryptTB.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        getContentPane().add(encryptTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 400, -1));
+        encryptTxt.setForeground(new java.awt.Color(255, 153, 0));
+        encryptTxt.setText(" Select File");
+        encryptTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+        encryptTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encryptTxtMouseClicked(evt);
+            }
+        });
+        getContentPane().add(encryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 80, 30));
 
         encryptBtn.setBackground(new java.awt.Color(255, 255, 255));
-        encryptBtn.setFont(new java.awt.Font("Raleway", 0, 16)); // NOI18N
+        encryptBtn.setFont(new java.awt.Font("Raleway", 0, 14)); // NOI18N
         encryptBtn.setForeground(new java.awt.Color(255, 153, 51));
-        encryptBtn.setText("Encrypt");
+        encryptBtn.setText(" Encrypt File");
+        encryptBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
         encryptBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 encryptBtnMouseClicked(evt);
             }
         });
-        getContentPane().add(encryptBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 70, 20));
+        getContentPane().add(encryptBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 100, 30));
+
+        encryptFilePath.setBackground(new java.awt.Color(255, 255, 255));
+        encryptFilePath.setForeground(new java.awt.Color(255, 255, 255));
+        encryptFilePath.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        getContentPane().add(encryptFilePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 310, 30));
 
         decryptLogo.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
         decryptLogo.setForeground(new java.awt.Color(255, 255, 255));
@@ -100,35 +130,22 @@ public class CipherJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitBtnMouseClicked
 
     private void encryptBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptBtnMouseClicked
-        String typedText=encryptTB.getText();
+        //
     }//GEN-LAST:event_encryptBtnMouseClicked
 
+    private void encryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptTxtMouseClicked
+            JFileChooser fc=new JFileChooser();
+            int result=fc.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                   File file = fc.getSelectedFile();
+                   filePath = file.getAbsolutePath(); 
+                   encryptFilePath.setText(filePath);
+     }        // TODO add your handling code here:
+    }//GEN-LAST:event_encryptTxtMouseClicked
+
+    
     
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CipherJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CipherJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CipherJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CipherJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CipherJFrame().setVisible(true);
@@ -142,8 +159,8 @@ public class CipherJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel decryptLogo;
     private javax.swing.JLabel devider;
     private javax.swing.JLabel encryptBtn;
+    private javax.swing.JLabel encryptFilePath;
     private javax.swing.JLabel encryptLogo;
-    private javax.swing.JTextField encryptTB;
     private javax.swing.JLabel encryptTxt;
     private javax.swing.JLabel exitBtn;
     private javax.swing.JLabel logo;
