@@ -38,6 +38,7 @@ public class CipherJFrame extends javax.swing.JFrame {
     private String filePath;
     private String fileText="";
     private String newFileText="";
+    private String encryptText="";
     private String encrypKey="";
             
     public CipherJFrame() {
@@ -166,13 +167,11 @@ public class CipherJFrame extends javax.swing.JFrame {
 
     private void encryptBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptBtnMouseClicked
         shuffleArray();
-        encryptKeyTB.setText(encrypKey);
         //change alphabet and put it into a new textline
         for (int i = 0; i < fileText.length(); i++) {
             for (int j = 0; j < alphabet.length(); j++) {
                 if (fileText.charAt(i) == alphabet.charAt(j)) {
                     newFileText += newAlphabet.get(j);
-                    System.out.println(newAlphabet);
                     break;
                 }else if(j==25){
                     newFileText+=fileText.charAt(i);
@@ -201,15 +200,29 @@ public class CipherJFrame extends javax.swing.JFrame {
                 temp = "";
                 count=0;
             }
-            
         }
-        System.out.println(tempStrings);
+        
+        ArrayList<Integer> tempIteration=new ArrayList<>(); //create temperory arraylist to store iterations
+        for(int i=0;i<randomNumber;i++){
+            tempIteration.add(i);
+        }
+        Collections.shuffle(tempIteration);
+        for(int i=0;i<tempIteration.size();i++){
+            encrypKey+=tempIteration.get(i);
+        }
+        for(int i=0;i<tempStrings.size();i++){
+            for(int j=0;j<tempIteration.size();j++){
+                encryptText+=(tempStrings.get(i).charAt(j));
+            }
+        }
+        encryptKeyTB.setText(encrypKey);
+        System.out.println(encrypKey);
         //create a new file to write the output
         try {
             FileWriter fileWriter =new FileWriter("Decrypt.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(newFileText);
-            System.out.println(newFileText);
+            bufferedWriter.write(encryptText);
+            System.out.println(encryptText);
             bufferedWriter.close();
             fileEncryptWarn.setVisible(true);
         }
@@ -243,8 +256,7 @@ public class CipherJFrame extends javax.swing.JFrame {
                 System.out.println("Unable to open file");               
             }
             catch(IOException ex) {
-                System.out.println("Error reading file" );                  
-
+                System.out.println("Error reading file" ); 
             }
         }        
     }//GEN-LAST:event_encryptTxtMouseClicked
