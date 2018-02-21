@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class CipherJFrame extends javax.swing.JFrame {
     private String alphabet="abcdefghijklmnopqrstuvwxyz";
+    //encrpt variables
     private ArrayList<Character> originalAlphabet=new ArrayList<>();
     private ArrayList<Character> newAlphabet=new ArrayList<>();
     private String filePath;
@@ -40,18 +41,27 @@ public class CipherJFrame extends javax.swing.JFrame {
     private String newFileText="";
     private String encryptText="";
     private String encrypKey="";
-            
+    
+    //decrypt variables
+    private String decryptedText="";
+    private String secondaryDecryptText="";
+    private String finalDecryptText="";
+    private ArrayList<String> decryptIterString=new ArrayList<>();
+    
     public CipherJFrame() {
         initComponents();
         setLocationRelativeTo(null);
         fileEncryptWarn.setVisible(false);
+        fileDecryptWarn.setVisible(false);
+        
+    }
+    
+    private void shuffleArray(){//shuffle array elements
+        encrypKey="";
         for(int i=0;i<alphabet.length();i++){ //adding alphabet to the original alphabet array
             originalAlphabet.add(alphabet.charAt(i));
             newAlphabet.add(alphabet.charAt(i));
         }
-    }
-    
-    private void shuffleArray(){//shuffle array elements
         Collections.shuffle(newAlphabet);
         for(int i=0;i<newAlphabet.size();i++){
             encrypKey+=newAlphabet.get(i);
@@ -163,7 +173,7 @@ public class CipherJFrame extends javax.swing.JFrame {
                 decryptfileMouseClicked(evt);
             }
         });
-        getContentPane().add(decryptfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 100, 30));
+        getContentPane().add(decryptfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 100, 30));
 
         decryptFilePath.setBackground(new java.awt.Color(255, 255, 255));
         decryptFilePath.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,16 +192,16 @@ public class CipherJFrame extends javax.swing.JFrame {
         getContentPane().add(decryptTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 140, 80, 30));
 
         decryptKeyTB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        getContentPane().add(decryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 400, 30));
+        getContentPane().add(decryptKeyTB, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 400, 30));
 
         decryptKeyTitle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         decryptKeyTitle.setForeground(new java.awt.Color(255, 255, 255));
         decryptKeyTitle.setText(" Enter Encrypt Key to Decrypt");
-        getContentPane().add(decryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 290, 220, -1));
+        getContentPane().add(decryptKeyTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 210, 220, -1));
 
         fileDecryptWarn.setForeground(new java.awt.Color(255, 153, 51));
         fileDecryptWarn.setText("File Decypted Successfully");
-        getContentPane().add(fileDecryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(439, 312, 150, -1));
+        getContentPane().add(fileDecryptWarn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 150, -1));
 
         divider.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maneesha\\Desktop\\devider.png")); // NOI18N
         divider.setMaximumSize(new java.awt.Dimension(100, 2048));
@@ -213,7 +223,10 @@ public class CipherJFrame extends javax.swing.JFrame {
     
     //===============================Encryptation===============================
     private void encryptBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptBtnMouseClicked
+        newAlphabet.clear();
         shuffleArray();
+        newFileText="";
+        encryptText="";
         //change alphabet and put it into a new textline
         for (int i = 0; i < fileText.length(); i++) {
             for (int j = 0; j < alphabet.length(); j++) {
@@ -230,7 +243,7 @@ public class CipherJFrame extends javax.swing.JFrame {
         int randomNumber = rn.nextInt(5) + 6;
         
         int newTextlength=newFileText.length();
-        int newTextLessCharacterNo=newTextlength%randomNumber;
+        int newTextLessCharacterNo=randomNumber - newTextlength%randomNumber;
         
         for(int i=0;i<newTextLessCharacterNo;i++){//setting a fixed length
             newFileText+=" ";
@@ -248,7 +261,7 @@ public class CipherJFrame extends javax.swing.JFrame {
                 count=0;
             }
         }
-        
+       
         ArrayList<Integer> tempIteration=new ArrayList<>(); //create temperory arraylist to store iterations
         for(int i=0;i<randomNumber;i++){
             tempIteration.add(i);
@@ -257,19 +270,20 @@ public class CipherJFrame extends javax.swing.JFrame {
         for(int i=0;i<tempIteration.size();i++){
             encrypKey+=tempIteration.get(i);
         }
+        System.out.println(tempStrings);
         for(int i=0;i<tempStrings.size();i++){
             for(int j=0;j<tempIteration.size();j++){
-                encryptText+=(tempStrings.get(i).charAt(j));
+                encryptText+=(tempStrings.get(i).charAt(tempIteration.get(j)));
             }
         }
         encryptKeyTB.setText(encrypKey);
-        System.out.println(encrypKey);
+        System.out.println("Encrypt Key:"+encrypKey);
         //create a new file to write the output
         try {
-            FileWriter fileWriter =new FileWriter("Decrypt.txt");
+            FileWriter fileWriter =new FileWriter("Encrypt.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(encryptText);
-            System.out.println(encryptText);
+            System.out.println("Encrpt text:"+encryptText);
             bufferedWriter.close();
             fileEncryptWarn.setVisible(true);
         }
@@ -280,6 +294,7 @@ public class CipherJFrame extends javax.swing.JFrame {
 
     private void encryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encryptTxtMouseClicked
         fileEncryptWarn.setVisible(false);
+        fileText="";
         JFileChooser fc=new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         fc.setFileFilter(filter);
@@ -308,16 +323,99 @@ public class CipherJFrame extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_encryptTxtMouseClicked
 
+    //===============================Decryptation===============================
     private void decryptfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decryptfileMouseClicked
-        // TODO add your handling code here:
+        if(decryptKeyTB.getText().length()>30){
+            String temp=decryptKeyTB.getText(); 
+         
+            int tempIterationNumber=temp.length()-26;                //get the iteration numbers
+            ArrayList<Integer> tempIterationAL=new ArrayList<>();
+            for(int i=26;i<temp.length();i++){
+                tempIterationAL.add((Character.getNumericValue(temp.charAt(i))));//iteration Array
+            }
+            
+            //making iterations add to the sub strings
+            String tempSize="";
+            int count=0;
+            for(int j=0;j<decryptedText.length();j++){
+                count++;
+                tempSize += decryptedText.charAt(j);
+                if (count == tempIterationNumber) {
+                    decryptIterString.add(tempSize);
+                    tempSize = "";
+                    count=0;
+                }
+            }
+            
+            for(int i=0;i<decryptIterString.size();i++){
+               String tempsubstring=decryptIterString.get(i);
+               char[] chars = tempsubstring.toCharArray();
+               for(int j=0;j<tempIterationNumber;j++){
+                   chars[tempIterationAL.get(j)]=tempsubstring.charAt(j);
+               }
+               for(int k=0;k<tempIterationNumber;k++){
+                   secondaryDecryptText+=chars[k];
+               }
+            }
+            for(int i=0;i<secondaryDecryptText.length();i++){
+                int counter=0;
+                for(int j=0;j<26;j++){
+                    counter++;
+                    if(secondaryDecryptText.charAt(i)==temp.charAt(j)){
+                        finalDecryptText+=alphabet.charAt(j);
+                        counter=0;
+                        break;
+                    }else if(counter==26){
+                        finalDecryptText+=secondaryDecryptText.charAt(i);
+                        counter=0;
+                    }
+                }
+            }
+            System.out.print(finalDecryptText);
+            //create a new file to write the output
+            try {
+                FileWriter fileWriter =new FileWriter("Decrypt.txt");
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(finalDecryptText);
+                bufferedWriter.close();
+                fileDecryptWarn.setVisible(true);
+            }
+            catch(IOException ex) {
+                System.out.println("Error writing to file");
+            }
+        }
     }//GEN-LAST:event_decryptfileMouseClicked
 
     private void decryptTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decryptTxtMouseClicked
-        // TODO add your handling code here:
+    fileDecryptWarn.setVisible(false);
+    decryptedText="";
+    JFileChooser fc=new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+    fc.setFileFilter(filter);
+    int result=fc.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = fc.getSelectedFile();        
+        filePath = file.getAbsolutePath(); 
+        decryptFilePath.setText(filePath);
+        String line = null;
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = new FileReader(filePath);
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                decryptedText += line; //adding all lines to a sin
+            }
+            System.out.println("DecryptedText:"+decryptedText);
+            bufferedReader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Unable to open file");
+        } catch (IOException ex) {
+            System.out.println("Error reading file");
+        }
+        }        
     }//GEN-LAST:event_decryptTxtMouseClicked
-
-    //===============================Decryptation===============================
-    
+  
     
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
