@@ -1,5 +1,5 @@
 # Cipher
-Cipher is a Java based Encryption and Decryption program which used to encrypt and decrypt text files
+Cipher is a Java based Encryption and Decryption program which can be used to encrypt and decrypt text files
 
 ### Encryption
 To encrypt a text file, select the text file and press encrypt and it will provide you a key and say encryptation successful.
