@@ -326,8 +326,11 @@ public class CipherJFrame extends javax.swing.JFrame {
     //===============================Decryptation===============================
     private void decryptfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decryptfileMouseClicked
         if(decryptKeyTB.getText().length()>30){
+            decryptIterString.clear();
+            finalDecryptText="";
+            secondaryDecryptText="";
             String temp=decryptKeyTB.getText(); 
-         
+            
             int tempIterationNumber=temp.length()-26;                //get the iteration numbers
             ArrayList<Integer> tempIterationAL=new ArrayList<>();
             for(int i=26;i<temp.length();i++){
