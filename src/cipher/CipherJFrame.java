@@ -310,7 +310,7 @@ public class CipherJFrame extends javax.swing.JFrame {
                 // Always wrap FileReader in BufferedReader.
                 BufferedReader bufferedReader =new BufferedReader(fileReader);
                 while((line = bufferedReader.readLine()) != null) {
-                    fileText+=line; //adding all lines to a sin
+                    fileText+=line.toLowerCase(); //adding all lines to a sin
                 }   
                 bufferedReader.close();         
             }
